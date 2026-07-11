@@ -85,7 +85,8 @@ public class StudentRepositoryImpl implements StudentRepository {
         try(Session session=SESSION_FACTORY.openSession()) {
             Transaction tx = session.beginTransaction();
             Student student=session.find(Student.class,studentId);
-            student.getCourseList().removeIf(course -> course.getId() == courseId);
+            student.getCourseList().stream().filter(course -> course.getId() == courseId).filter(course -> course.getStudentList().size()==1).findFirst().ifPresent(session::remove);
+            student.getCourseList().removeIf(pet -> pet.getId()==courseId);
             session.merge(student);
             tx.commit();
         }
@@ -94,13 +95,12 @@ public class StudentRepositoryImpl implements StudentRepository {
     @Override
     public void addCoStudent(int courseId, Student student) {
         try (Session session = SESSION_FACTORY.openSession()) {
-            Transaction transaction = session.beginTransaction();
+            Transaction tx = session.beginTransaction();
             Course course = session.find(Course.class, courseId);
-            if (Objects.nonNull(student)) {
-                course.getStudentList().add(student);
-                session.merge(course);
-            }
-            transaction.commit();
+            student.getCourseList().add(course);
+            course.getStudentList().add(student);
+            session.persist(student);
+            tx.commit();
         }
     }
 
