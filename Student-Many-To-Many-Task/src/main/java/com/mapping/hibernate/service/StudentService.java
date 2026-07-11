@@ -22,7 +22,7 @@ public interface StudentService {
 
     void deleteCourse(int studentId, int courseId) throws StudentNotFoundException, CourseNotFoundException;
 
-    void addCoOwner(int courseId, StudentDTO studentDTO) throws CourseNotFoundException;
+    void addCoStudent(int courseId, StudentDTO studentDTO) throws CourseNotFoundException;
 
     List<StudentDTO> findAllStudents();
 }

@@ -81,12 +81,12 @@ public class App {
                     case 8:
                         studentDTO = InputUtil.acceptStudentDetailsToSave(scanner);
                         courseId = InputUtil.acceptCourseIdToOperate(scanner);
-                        studentService.addCoOwner(courseId, studentDTO);
+                        studentService.addCoStudent(courseId, studentDTO);
                         System.out.println("Co-Student has been added successfully.");
                         break;
                     case 9:
-                        List<StudentDTO>ownerDTOList=studentService.findAllStudents();
-                        ownerDTOList.forEach(System.out::println);
+                        List<StudentDTO>studentDTOList=studentService.findAllStudents();
+                        studentDTOList.forEach(System.out::println);
                         System.out.println("Student has been fetched successfully");
                         break;
                     default:

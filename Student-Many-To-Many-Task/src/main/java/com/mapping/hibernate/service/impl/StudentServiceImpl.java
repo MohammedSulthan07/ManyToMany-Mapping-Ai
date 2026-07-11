@@ -8,6 +8,7 @@ import com.mapping.hibernate.exception.CourseNotFoundException;
 import com.mapping.hibernate.exception.StudentNotFoundException;
 import com.mapping.hibernate.repository.CourseRepository;
 import com.mapping.hibernate.repository.StudentRepository;
+import com.mapping.hibernate.repository.impl.CourseRepositoryImpl;
 import com.mapping.hibernate.repository.impl.StudentRepositoryImpl;
 import com.mapping.hibernate.service.StudentService;
 import com.mapping.hibernate.util.MapperUtil;
@@ -23,6 +24,7 @@ public class StudentServiceImpl implements StudentService {
 
     public StudentServiceImpl() {
         studentRepository = new StudentRepositoryImpl();
+        courseRepository = new CourseRepositoryImpl();
     }
 
     @Override
@@ -73,9 +75,10 @@ public class StudentServiceImpl implements StudentService {
         if (student == null) {
             throw new StudentNotFoundException("Student not found");
         }
-        Course course=MapperUtil.convertCourseDtoToEntity(courseDTO);
-        course.setStudentList((Set<Student>) student);
-        studentRepository.addCourse(studentId,course);
+        Course course = MapperUtil.convertCourseDtoToEntity(courseDTO);
+        student.getCourseList().add(course);
+        course.getStudentList().add(student);
+        studentRepository.addCourse(studentId, course);
     }
 
     @Override
@@ -91,7 +94,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void addCoOwner(int courseId, StudentDTO studentDTO) throws CourseNotFoundException {
+    public void addCoStudent(int courseId, StudentDTO studentDTO) throws CourseNotFoundException {
         Course course = courseRepository.findCourse(courseId);
         if (Objects.isNull(course)) {
             throw new CourseNotFoundException("Course not found");

@@ -9,10 +9,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
 public class MapperUtil {
     private MapperUtil() {
 
     }
+
 
     public static StudentDTO convertStudentEntityToDto(Student student) {
         StudentDTO studentDTO = new StudentDTO();
@@ -49,7 +51,7 @@ public class MapperUtil {
         courseDTO.setEnrollmentDate(course.getEnrollmentDate());
         courseDTO.setCourseType(course.getCourseType());
         courseDTO.setGrade(course.getGrade());
-        courseDTO.setStudentDTO(convertStudentEntityToDtoWithoutCourse((Student) course.getStudentList()));
+        //  courseDTO.setStudentDTO(convertStudentEntityToDtoWithoutCourse(course.getStudent()));
         return courseDTO;
     }
 

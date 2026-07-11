@@ -72,8 +72,9 @@ public class StudentRepositoryImpl implements StudentRepository {
     public void addCourse(int studentId, Course course) {
         try(Session session=SESSION_FACTORY.openSession()) {
             Transaction tx = session.beginTransaction();
-            Student student=session.find(Student.class,studentId);
-            Hibernate.initialize(student.getCourseList().add(course));
+            Student student = session.find(Student.class, studentId);
+            student.getCourseList().add(course);
+            course.getStudentList().add(student);
             session.persist(course);
             tx.commit();
         }
@@ -105,7 +106,7 @@ public class StudentRepositoryImpl implements StudentRepository {
 
     @Override
     public List<Student> findAllStudent() {
-        String hql = "SELECT o FROM Owner o";
+        String hql = "SELECT o FROM Student o";
         try (Session session = SESSION_FACTORY.openSession()) {
             return session.createSelectionQuery(hql, Student.class)
                     .getResultList();
